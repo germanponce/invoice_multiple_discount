@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_saleorder_document" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//table[@class='table table-condensed']" position="after">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Discount Type</th>
+                            <th>Discount Rate</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody class="sale_tbody">
+                        <tr t-foreach="doc.discount_ids" t-as="l">
+                            <td>
+                                <span t-field="l.discount_type"/>
+                            </td>
+                            <td>
+                                <span t-field="l.discount_rate"/>
+                            </td>
+                            <td>
+                                <span t-field="l.description"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </xpath>
+
+            <xpath expr="//div[@name='total']/div/table" position="replace">
+                <table class="table table-condensed">
+
+                    <tr>
+                        <td>
+                            <strong>Amount Before Discount</strong>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="doc.amount_befor_discount"
+                                  t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/>
+                        </td>
+                    </tr>
+                    <tr class="border-black">
+                        <td>
+                            <strong>Total Without Taxes</strong>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="doc.amount_untaxed"
+                                  t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                        </td>
+                    </tr>
+                    <!--<t t-foreach="doc._get_tax_amount_by_group()" t-as="amount_by_group">-->
+                    <!--<tr>-->
+                    <!--<td>-->
+                    <!--<span t-esc="amount_by_group[0] or 'Taxes'"/>-->
+                    <!--</td>-->
+                    <!--<td class="text-right">-->
+                    <!--<span t-esc="amount_by_group[1]"/>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--</t>-->
+
+                    <tr>
+                        <td>Taxes</td>
+                        <td class="text-right">
+                            <span t-field="doc.amount_tax"
+                                  t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>
+                                Discount
+                            </strong>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="doc.amount_discount"
+                                  t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/>
+                        </td>
+                    </tr>
+                    <tr class="border-black">
+                        <td>
+                            <strong>Total</strong>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="doc.amount_total"
+                                  t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                        </td>
+                    </tr>
+                </table>
+
+            </xpath>
+
+
+        </template>
+    </data>
+</openerp>

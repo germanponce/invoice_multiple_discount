@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="discount_sale_order_view_form1" model="ir.ui.view">
+            <field name="name">discount.account.invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='discount']" position="attributes">
+                    <attribute name="digits">(16, 2)</attribute>
+                </xpath>
+                <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">
+                        <group name="discount"> 
+                            <div>
+                                <label for="discount_ids"/><button name="button_reset_taxes" states="draft,proforma2"
+                                        string="Apply discounts" class="oe_link oe_edit_only"
+                                        type="object" help="Recompute taxes and total"/>
+                            </div>
+                            <field name="discount_ids" nolabel="1">
+                                <tree editable="buttom">
+                                    <field name="discount_type"/>
+                                    <field name="discount_rate"/>
+                                    <field name="description"/>
+                                </tree>                                
+                            </field> 
+                        </group>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="amount_befor_discount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_discount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>                             
+                            <field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_total" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>                     
+                            <field name="payments_widget" colspan="2" nolabel="1" widget="payment"/>
+                            <field name="residual" class="oe_subtotal_footer_separator" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                            <field name="reconciled" invisible="1"/>
+                            <field name="outstanding_credits_debits_widget" colspan="2" nolabel="1" widget="payment" attrs="{'invisible': [('state', 'not in', 'open')]}"/>                         
+                        </group>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</openerp>
